@@ -18,7 +18,7 @@ namespace neaweb.Example
 
             // Get SoftwareVersion
             var newSoftwareVersion = logEntries.SoftwareVersionRepository.InsertAndGetSoftwareVersionByNameAndVersion("software", "version" + new Random().Next(1000)).Result;
-
+            
             //Do some updates to the archiveversion here
             av.TotalSize = 4.3434f;
             av.SearchesCount = 10;

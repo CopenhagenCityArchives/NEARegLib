@@ -28,6 +28,8 @@ namespace neaweb_dapper
         /// Saves a LogEntry and updates the ArchiveversionMetadata object if it has changed
         /// </summary>
         /// <param name="LogEntry log"></param>
+        /// <exception cref="ArgumentException">If SoftwareVersion or ArchiveversionMetadata is null</exception>
+        /// /// <exception cref="Exception">On ArchiveversionMetadata update error or if log entry cannot be saved</exception>
         /// <returns>Task<bool></returns>
         public async Task<bool> AddLogEntryUpdateArchiveversionMetadata(LogEntry log)
         {
