@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "neaweb.Test", "neaweb.Test\neaweb.Test.csproj", "{5C525638-B345-4E0F-B01C-B69BB89C2500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NEARegLib.Tests", "NEARegLib.Test\NEARegLib.Tests.csproj", "{5C525638-B345-4E0F-B01C-B69BB89C2500}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "neaweb.Lib", "neaweb.Lib\neaweb.Lib.csproj", "{C93A0D3F-B05C-4C4A-8773-4EEC91B873AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NEARegLib.Lib", "NEARegLib.Lib\NEARegLib.Lib.csproj", "{C93A0D3F-B05C-4C4A-8773-4EEC91B873AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neaweb.Example", "neaweb.Example\neaweb.Example.csproj", "{35F5D999-7763-4A53-A002-D6173A71D4CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEARegLib.Example", "NEARegLib.Example\NEARegLib.Example.csproj", "{35F5D999-7763-4A53-A002-D6173A71D4CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
