@@ -3,7 +3,7 @@ dist: xenial
 language: csharp
 solution: NEAReg.Lib.sln
 mono: none
-dotnet: 7.0.5
+dotnet: latest
 git:
   depth: false
 script:
