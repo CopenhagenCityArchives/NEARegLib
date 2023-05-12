@@ -1,4 +1,4 @@
-﻿namespace neaweb.Models
+﻿namespace NEARegLib.Models
 {
     public class SoftwareVersion
     {

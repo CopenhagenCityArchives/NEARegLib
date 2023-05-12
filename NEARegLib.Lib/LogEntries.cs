@@ -1,10 +1,10 @@
-﻿using neaweb.Models;
-using neaweb_dapper.DAL.Repositories;
-using neaweb_dapper.DAL.UnitsOfWork;
+﻿using NEARegLib.Models;
+using NEARegLib.DAL.Repositories;
+using NEARegLib.DAL.UnitsOfWork;
 using System;
 using System.Threading.Tasks;
 
-namespace neaweb_dapper
+namespace NEARegLib
 {
     /// <summary>
     /// This class handles creation of LogEntry objects and subsequent updates of related archiveversionmetadata

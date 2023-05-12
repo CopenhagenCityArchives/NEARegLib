@@ -1,11 +1,11 @@
 using Moq;
-using neaweb.Models;
-using neaweb_dapper;
-using neaweb_dapper.DAL.Repositories;
-using neaweb_dapper.DAL.UnitsOfWork;
+using NEARegLib.Models;
+using NEARegLib;
+using NEARegLib.DAL.Repositories;
+using NEARegLib.DAL.UnitsOfWork;
 using NUnit.Framework;
 
-namespace neaweb.Test
+namespace NEARegLib.Test
 {
     public class LogEntriesTests
     {

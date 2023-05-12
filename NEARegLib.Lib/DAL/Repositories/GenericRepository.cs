@@ -1,11 +1,11 @@
 ﻿using Dapper;
-using neaweb_dapper.DAL.UnitsOfWork;
+using NEARegLib.DAL.UnitsOfWork;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Dapper.SqlMapper;
 
-namespace neaweb_dapper.DAL.Repositories
+namespace NEARegLib.DAL.Repositories
 {
     public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace neaweb_dapper.DAL.Repositories
+namespace NEARegLib.DAL.Repositories
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {

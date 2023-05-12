@@ -1,7 +1,6 @@
-﻿using neaweb.Models;
-using neaweb_dapper;
+﻿using NEARegLib.Models;
 
-namespace neaweb.Example
+namespace NEARegLib.Example
 {
     internal class Program
     {

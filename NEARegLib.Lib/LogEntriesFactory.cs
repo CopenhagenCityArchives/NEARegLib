@@ -1,8 +1,8 @@
-﻿using neaweb_dapper.DAL;
-using neaweb_dapper.DAL.Repositories;
-using neaweb_dapper.DAL.UnitsOfWork;
+﻿using NEARegLib.DAL;
+using NEARegLib.DAL.Repositories;
+using NEARegLib.DAL.UnitsOfWork;
 
-namespace neaweb_dapper
+namespace NEARegLib
 {
     public class LogEntriesFactory
     {

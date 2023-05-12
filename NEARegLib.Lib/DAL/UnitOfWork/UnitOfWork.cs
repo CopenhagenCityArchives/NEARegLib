@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace neaweb_dapper.DAL.UnitsOfWork
+namespace NEARegLib.DAL.UnitsOfWork
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {

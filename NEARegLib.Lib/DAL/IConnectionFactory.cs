@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace neaweb_dapper.DAL
+namespace NEARegLib.DAL
 {
     public interface IConnectionFactory
     {

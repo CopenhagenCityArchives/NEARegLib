@@ -1,8 +1,8 @@
-﻿using neaweb.Models;
-using neaweb_dapper.DAL.UnitsOfWork;
+﻿using NEARegLib.Models;
+using NEARegLib.DAL.UnitsOfWork;
 using System;
 
-namespace neaweb_dapper.DAL.Repositories
+namespace NEARegLib.DAL.Repositories
 {
     public class LogEntryRepository : GenericRepository<LogEntry>
     {

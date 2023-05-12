@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace neaweb.Models
+namespace NEARegLib.Models
 {
     public class LogEntry
     {

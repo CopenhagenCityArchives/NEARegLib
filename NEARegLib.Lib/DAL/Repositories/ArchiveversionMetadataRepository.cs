@@ -1,11 +1,11 @@
-﻿using neaweb.Models;
-using neaweb_dapper.DAL.UnitsOfWork;
+﻿using NEARegLib.Models;
+using NEARegLib.DAL.UnitsOfWork;
 using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace neaweb_dapper.DAL.Repositories
+namespace NEARegLib.DAL.Repositories
 {
     public class ArchiveversionMetadataRepository : GenericRepository<ArchiveversionMetadata>, IArchiveversionMetadataRepository
     {

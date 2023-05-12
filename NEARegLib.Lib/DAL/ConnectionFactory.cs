@@ -1,7 +1,7 @@
 ﻿using MySqlConnector;
 using System.Data;
 
-namespace neaweb_dapper.DAL
+namespace NEARegLib.DAL
 {
     public class ConnectionFactory : IConnectionFactory
     {

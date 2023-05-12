@@ -1,7 +1,7 @@
-﻿using neaweb.Models;
+﻿using NEARegLib.Models;
 using System.Threading.Tasks;
 
-namespace neaweb_dapper.DAL.Repositories
+namespace NEARegLib.DAL.Repositories
 {
     public interface IArchiveversionMetadataRepository : IGenericRepository<ArchiveversionMetadata>
     {
