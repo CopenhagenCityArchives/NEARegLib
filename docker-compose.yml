@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:latest
+    container_name: neaweb_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: neaweb
+      MYSQL_USER: neaweb
+      MYSQL_PASSWORD: 123456
+    ports: 
+      - "3306:3306"
+    volumes:
+      - "./infrastructure/mysql-init/:/docker-entrypoint-initdb.d/"
