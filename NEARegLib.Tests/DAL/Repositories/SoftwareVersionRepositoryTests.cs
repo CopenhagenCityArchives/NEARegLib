@@ -28,7 +28,7 @@ namespace NEARegLib.Test.DAL.Repositories
             // Return list with software versions
             svRep.Setup(a => a.RetrieveAll()).ReturnsAsync(softwareList);
 
-            var result = await svRep.Object.InsertAndGetSoftwareVersionByNameAndVersion("wolfpack", "version1+4581.54");
+            var result = await svRep.Object.InsertOrGetSoftwareVersionIdByNameAndVersion("wolfpack", "version1+4581.54");
 
             Assert.That(softwareList[0], Is.EqualTo(result));
         }
@@ -40,7 +40,7 @@ namespace NEARegLib.Test.DAL.Repositories
             svRep.Setup(a => a.RetrieveAll()).ReturnsAsync(new List<SoftwareVersion>());
             svRep.Setup(sv => sv.Create(It.IsAny<SoftwareVersion>())).ReturnsAsync(new SoftwareVersion());
 
-            var result = await svRep.Object.InsertAndGetSoftwareVersionByNameAndVersion("does_not_exist", "new_version");
+            var result = await svRep.Object.InsertOrGetSoftwareVersionIdByNameAndVersion("does_not_exist", "new_version");
 
             svRep.Verify(sv => sv.Create(It.IsAny<SoftwareVersion>()), Times.Once, "Must create new software version if it does not exist");
             Assert.That(result, Is.Not.Null);
