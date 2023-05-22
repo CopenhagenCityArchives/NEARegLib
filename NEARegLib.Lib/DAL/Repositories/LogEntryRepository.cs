@@ -26,9 +26,9 @@ namespace NEARegLib.DAL.Repositories
         {
             get
             {
-                return "INSERT INTO LOG (ID, gruppe, AVID, beskrivelse, ts, status, software_version, user_ID) " +
+                return "INSERT INTO LOG (ID, gruppe, AVID, beskrivelse, ts, errors_occurred, software_version, user_ID) " +
                 "VALUES " +
-                "(@Id, @type, @ArchiveversionId, @description, NOW(), @status, @SoftwareVersionId, @UserId);";
+                "(@Id, @Type, @ArchiveversionId, @Description, NOW(), @ErrorsOccurred, @SoftwareVersionId, @UserId);";
             }
         }
 
