@@ -49,7 +49,7 @@ namespace NEARegLib.DAL.Repositories
         /// <param name="name"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        public async Task<SoftwareVersion> InsertAndGetSoftwareVersionByNameAndVersion(string name, string version)
+        public async Task<SoftwareVersion> InsertOrGetSoftwareVersionIdByNameAndVersion(string name, string version)
         {
             var allSoftwareVersions = await RetrieveAll();
 

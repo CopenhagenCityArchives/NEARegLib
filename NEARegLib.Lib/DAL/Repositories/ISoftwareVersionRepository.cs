@@ -5,6 +5,6 @@ namespace NEARegLib.DAL.Repositories
 {
     public interface ISoftwareVersionRepository : IGenericRepository<SoftwareVersion>
     {
-        public Task<SoftwareVersion> InsertAndGetSoftwareVersionByNameAndVersion(string name, string version);
+        public Task<SoftwareVersion> InsertOrGetSoftwareVersionIdByNameAndVersion(string name, string version);
     }
 }
