@@ -36,7 +36,7 @@ CREATE TABLE `LOG` (
   `user_ID` int(11) NOT NULL,
   `log_fra` timestamp NULL DEFAULT NULL,
   `log_til` timestamp NULL DEFAULT NULL,
-  `status` char(100) CHARACTER SET latin1 COLLATE latin1_danish_ci DEFAULT NULL,
+  `errors_occurred` tinyint(1) NULL DEFAULT NULL,
   `software_version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44,7 +44,7 @@ CREATE TABLE `LOG` (
 -- Data dump for tabellen `LOG`
 --
 
-INSERT INTO `LOG` (`ID`, `gruppe`, `AVID`, `beskrivelse`, `ts`, `user_ID`, `log_fra`, `log_til`, `status`, `software_version`) VALUES
+INSERT INTO `LOG` (`ID`, `gruppe`, `AVID`, `beskrivelse`, `ts`, `user_ID`, `log_fra`, `log_til`, `errors_occurred`, `software_version`) VALUES
 (1, 1, 1, 'Genaflevering - Fejlrettes af DAF', NULL, 19, '2014-06-23 09:06:27', '2014-06-29 09:08:01', NULL, NULL),
 (17913, 1, 1, '2.2 Under produktion', '2023-05-03 12:01:22', 191, NULL, NULL, NULL, NULL),
 (17914, 2, 1, 'Lukket', '2023-05-08 07:16:16', 4, NULL, NULL, NULL, NULL),
@@ -60,7 +60,7 @@ INSERT INTO `LOG` (`ID`, `gruppe`, `AVID`, `beskrivelse`, `ts`, `user_ID`, `log_
 --
 ALTER TABLE `LOG`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `status` (`status`),
+  ADD KEY `errors_occurred` (`errors_occurred`),
   ADD KEY `software_version` (`software_version`);
 
 --
