@@ -12,7 +12,6 @@ namespace NEARegLib.Models
         public int SearchesCount { get; set; }
         public int LocationId { get; set; }
         public int ZipPackagesCount { get; set; }
-        public string EncryptionKey { get; set; }
 
         // Checks all properties including id
         public override bool Equals(object obj)
@@ -32,7 +31,6 @@ namespace NEARegLib.Models
                 Searchable == ae.Searchable &&
                 SearchesCount == ae.SearchesCount &&
                 ZipPackagesCount == ae.ZipPackagesCount &&
-                EncryptionKey == ae.EncryptionKey &&
                 LocationId == ae.LocationId;
         }
 
@@ -47,7 +45,6 @@ namespace NEARegLib.Models
             hash.Add(SearchesCount);
             hash.Add(LocationId);
             hash.Add(ZipPackagesCount);
-            hash.Add(EncryptionKey);
             return hash.ToHashCode();
         }
     }
