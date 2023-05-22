@@ -1,16 +1,18 @@
 using Moq;
 using NEARegLib.Models;
-using NEARegLib;
 using NEARegLib.DAL.Repositories;
 using NEARegLib.DAL.UnitsOfWork;
 using NUnit.Framework;
+using neaweb_dapper.DAL.UnitOfWork;
+using System.Numerics;
 
 namespace NEARegLib.Test
 {
-    public class LogEntriesTests
+    public class NeaRegTests
     {
         private Mock<IArchiveversionMetadataRepository> _archiveversionMetadataRepository;
         private Mock<ISoftwareVersionRepository> _softwareVersionRepository;
+        private Mock<ILocationRepository> _locationRepository;
         private Mock<IGenericRepository<LogEntry>> _logEntryRepository;
         private Mock<IUnitOfWork> _unitOfWorkRepository;
 
@@ -20,38 +22,35 @@ namespace NEARegLib.Test
             _unitOfWorkRepository = new Mock<IUnitOfWork>();
             _archiveversionMetadataRepository = new Mock<IArchiveversionMetadataRepository>();
             _softwareVersionRepository = new Mock<ISoftwareVersionRepository>();
+            _locationRepository = new Mock<ILocationRepository>();
             _logEntryRepository = new Mock<IGenericRepository<LogEntry>>();
         }
 
         [Test]
-        public Task AddLogEntryUpdateArchiveversionMetadata_ArchiveversionIsNull_ThrowException()
+        public Task UpdateArchiveversionAddLogEntry_ArchiveversionIdIsNull_ThrowException()
         {
-            var avEntryLog = new LogEntries(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _logEntryRepository.Object);
+            var neaReg = new NeaReg(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _locationRepository.Object, _logEntryRepository.Object);
 
-            var logEntry = new LogEntry()
-            {
-                ArchiveversionMetadata = null,
-                SoftwareVersion = new SoftwareVersion()
-            };
+            var avEntry = new ArchiveversionMetadata();
 
-            var result = avEntryLog.AddLogEntryUpdateArchiveversionMetadata(logEntry);
+            var result = neaReg.UpdateArchiveversionAddLogEntry(avEntry, LogEntryType.MiNEA);
 
             Assert.That(result.Exception?.InnerException is ArgumentException, Is.True);
             return Task.CompletedTask;
         }
 
         [Test]
-        public Task AddLogEntryUpdateArchiveversionMetadata_SoftwareVersionIsNull_ThrowExceptionReturn()
+        public Task AddLogEntryUpdateArchiveversionMetadata_SoftwareVersionRepositoryThrowsException_ThrowException()
         {
-            var avEntryLog = new LogEntries(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _logEntryRepository.Object);
+            _softwareVersionRepository.Setup(s => s.InsertOrGetSoftwareVersionIdByNameAndVersion(It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+            var neaReg = new NeaReg(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _locationRepository.Object, _logEntryRepository.Object);
 
-            var logEntry = new LogEntry()
+            var avEntry = new ArchiveversionMetadata()
             {
-                ArchiveversionMetadata = new ArchiveversionMetadata() { Id = 1 },
-                SoftwareVersion = null
+                Id = 1
             };
 
-            var result = avEntryLog.AddLogEntryUpdateArchiveversionMetadata(logEntry);
+            var result = neaReg.UpdateArchiveversionAddLogEntry(avEntry, LogEntryType.MiNEA);
 
             Assert.That(result.Exception?.InnerException is ArgumentException, Is.True);
             return Task.CompletedTask;
@@ -60,18 +59,19 @@ namespace NEARegLib.Test
         [Test]
         public async Task AddLogEntryUpdateArchiveversionMetadata_ValidInputDataSaved_StartAndCommitTransactionReturnTrue()
         {
+            _softwareVersionRepository.Setup(s => s.InsertOrGetSoftwareVersionIdByNameAndVersion(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new SoftwareVersion() { Id = 1 });
+
             //Return existing archiveversion
             var existingArchiveversion = new ArchiveversionMetadata() { Id = 1 };
             _archiveversionMetadataRepository.Setup(a => a.Retrieve(It.IsAny<int>())).ReturnsAsync(existingArchiveversion);
-            var avEntryLog = new LogEntries(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _logEntryRepository.Object);
+            var neaReg = new NeaReg(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _locationRepository.Object, _logEntryRepository.Object);
 
-            var logEntry = new LogEntry()
+            var av = new ArchiveversionMetadata()
             {
-                ArchiveversionMetadata = existingArchiveversion,
-                SoftwareVersion = new SoftwareVersion()
+                Id = 1
             };
 
-            var result = await avEntryLog.AddLogEntryUpdateArchiveversionMetadata(logEntry);
+            var result = await neaReg.UpdateArchiveversionAddLogEntry(av, LogEntryType.MiNEA);
 
             _unitOfWorkRepository.Verify(u => u.StartTransaction(), Times.Once(), "Must start transaction");
             _unitOfWorkRepository.Verify(u => u.Commit(), Times.Once(), "Must commit transaction");
@@ -85,16 +85,11 @@ namespace NEARegLib.Test
             // Return existing archiveversion
             _archiveversionMetadataRepository.Setup(a => a.Retrieve(It.IsAny<int>())).ReturnsAsync(() => null);
 
-            var avEntryLog = new LogEntries(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _logEntryRepository.Object);
+            var neaReg = new NeaReg(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _locationRepository.Object, _logEntryRepository.Object);
 
-            var updatedAv = new ArchiveversionMetadata() { Id = 1, TotalSize = 1.2f };
-            var logEntry = new LogEntry()
-            {
-                ArchiveversionMetadata = updatedAv,
-                SoftwareVersion = new SoftwareVersion()
-            };
+            var updatedAv = new ArchiveversionMetadata() { Id = 1 };
 
-            var result = avEntryLog.AddLogEntryUpdateArchiveversionMetadata(logEntry);
+            var result = neaReg.UpdateArchiveversionAddLogEntry(updatedAv,LogEntryType.MiNEA);
 
             Assert.That(result.Exception?.InnerException is ArgumentException, Is.True);
             return Task.CompletedTask;
@@ -103,41 +98,33 @@ namespace NEARegLib.Test
         [Test]
         public async Task AddLogEntryUpdateArchiveversionMetadata_ExistingArchiveversionHasChanged_UpdateArchiveversion()
         {
+            _softwareVersionRepository.Setup(s => s.InsertOrGetSoftwareVersionIdByNameAndVersion(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new SoftwareVersion() { Id = 1 });
+            
             // Return existing archiveversion
-            var existingAv = new ArchiveversionMetadata() { Id = 1 };
+            var existingAv = new ArchiveversionMetadata() { Id = 1, TotalSize = 1.3f };
             _archiveversionMetadataRepository.Setup(a => a.Retrieve(It.IsAny<int>())).ReturnsAsync(existingAv);
 
-            var avEntryLog = new LogEntries(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _logEntryRepository.Object);
+            var neaReg = new NeaReg(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _locationRepository.Object, _logEntryRepository.Object);
 
-            var updatedAv = new ArchiveversionMetadata() { Id = 1, TotalSize = 1.2f };
-            var logEntry = new LogEntry()
-            {
-                ArchiveversionMetadata = updatedAv,
-                SoftwareVersion = new SoftwareVersion()
-            };
+            var changedAv = new ArchiveversionMetadata() { Id = 1, TotalSize = 10.0f };
 
-            Assert.That(await avEntryLog.AddLogEntryUpdateArchiveversionMetadata(logEntry), Is.True);
+            Assert.That(await neaReg.UpdateArchiveversionAddLogEntry(changedAv, LogEntryType.MiNEA), Is.True);
 
-            _archiveversionMetadataRepository.Verify(a => a.Update(updatedAv), Times.Once, "Must update archiveversion if it exists");
+            _archiveversionMetadataRepository.Verify(a => a.Update(changedAv), Times.Once, "Must update archiveversion if it exists");
         }
 
         [Test]
         public async Task AddLogEntryUpdateArchiveversionMetadata_ExistingArchiveversionHasntChanged_DontUpdateArchiveversion()
         {
+            _softwareVersionRepository.Setup(s => s.InsertOrGetSoftwareVersionIdByNameAndVersion(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new SoftwareVersion() { Id = 1 });
+
             // Return existing archiveversion
-            var existingAv = new ArchiveversionMetadata() { Id = 1, TotalSize = 1.2f };
+            var existingAv = new ArchiveversionMetadata();
             _archiveversionMetadataRepository.Setup(a => a.Retrieve(It.IsAny<int>())).ReturnsAsync(existingAv);
 
-            var avEntryLog = new LogEntries(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _logEntryRepository.Object);
+            var neaReg = new NeaReg(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _locationRepository.Object, _logEntryRepository.Object);
 
-            var updatedAv = new ArchiveversionMetadata() { Id = 1, TotalSize = 1.2f };
-            var logEntry = new LogEntry()
-            {
-                ArchiveversionMetadata = updatedAv,
-                SoftwareVersion = new SoftwareVersion()
-            };
-
-            Assert.That(await avEntryLog.AddLogEntryUpdateArchiveversionMetadata(logEntry), Is.True);
+            Assert.That(await neaReg.UpdateArchiveversionAddLogEntry(existingAv, LogEntryType.MiNEA), Is.True);
 
             _archiveversionMetadataRepository.Verify(a => a.Update(It.IsAny<ArchiveversionMetadata>()), Times.Never, "Must not update archiveversion if it hasn't changed");
         }
@@ -149,15 +136,9 @@ namespace NEARegLib.Test
             var existingAv = new ArchiveversionMetadata() { Id = 1 };
             _archiveversionMetadataRepository.Setup(a => a.Retrieve(It.IsAny<int>())).ThrowsAsync(new Exception());
 
-            var avEntryLog = new LogEntries(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _logEntryRepository.Object);
+            var neaReg = new NeaReg(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _locationRepository.Object, _logEntryRepository.Object);
 
-            var logEntry = new LogEntry()
-            {
-                ArchiveversionMetadata = new ArchiveversionMetadata() { Id = 1 },
-                SoftwareVersion = new SoftwareVersion()
-            };
-
-            var result = avEntryLog.AddLogEntryUpdateArchiveversionMetadata(logEntry);
+            var result = neaReg.UpdateArchiveversionAddLogEntry(existingAv, LogEntryType.MiNEA);
 
             Assert.That(result.Exception?.InnerException is Exception, Is.True);
             return Task.CompletedTask;
@@ -171,16 +152,11 @@ namespace NEARegLib.Test
             _archiveversionMetadataRepository.Setup(a => a.Retrieve(It.IsAny<int>())).ReturnsAsync(existingAv);
             _archiveversionMetadataRepository.Setup(a => a.Update(It.IsAny<ArchiveversionMetadata>())).ThrowsAsync(new Exception());
 
-            var avEntryLog = new LogEntries(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _logEntryRepository.Object);
+            var neaReg = new NeaReg(_unitOfWorkRepository.Object, _archiveversionMetadataRepository.Object, _softwareVersionRepository.Object, _locationRepository.Object, _logEntryRepository.Object);
 
             var updatedAv = new ArchiveversionMetadata() { Id = 1, TotalSize = 1.2f };
-            var logEntry = new LogEntry()
-            {
-                ArchiveversionMetadata = updatedAv,
-                SoftwareVersion = new SoftwareVersion()
-            };
 
-            var result = avEntryLog.AddLogEntryUpdateArchiveversionMetadata(logEntry);
+            var result = neaReg.UpdateArchiveversionAddLogEntry(existingAv, LogEntryType.MiNEA);
 
             _unitOfWorkRepository.Verify(u => u.RollBack(), Times.Once, "Must call rollback on update error");
 
