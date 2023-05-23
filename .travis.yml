@@ -8,4 +8,4 @@ git:
   depth: false
 script:
  - dotnet restore
- - dotnet test NEARegLib.Test -c Release
+ - dotnet test -c Release
