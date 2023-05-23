@@ -1,5 +1,4 @@
 ﻿using NEARegLib.Models;
-using NEARegLib.DAL.UnitOfWork;
 
 namespace NEARegLib.Example
 {

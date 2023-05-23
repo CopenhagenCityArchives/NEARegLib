@@ -3,7 +3,7 @@ using System.Data;
 
 namespace NEARegLib.DAL.UnitsOfWork
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    internal class UnitOfWork : IUnitOfWork, IDisposable
     {
         readonly IDbConnection _connection;
         IDbTransaction _dbTransaction;
@@ -50,6 +50,7 @@ namespace NEARegLib.DAL.UnitsOfWork
                 _dbTransaction.Rollback();
             }
         }
+
         public void RollBack()
         {
             _dbTransaction.Rollback();
