@@ -31,25 +31,25 @@ namespace NEARegLib.DAL.Repositories
 
         public virtual async Task<IEnumerable<TEntity>> RetrieveAll()
         {
-            return await unitOfWork.Connection.QueryAsync<TEntity>(GetAllStatement);
+            return await unitOfWork.Connection.QueryAsync<TEntity>(GetAllStatement, transaction: unitOfWork.Transaction);
         }
 
         public virtual async Task<TEntity> Retrieve(int id)
         {
-            var list = await unitOfWork.Connection.QueryAsync<TEntity>(GetStatement, new { Id = id }, unitOfWork.Transaction);
+            var list = await unitOfWork.Connection.QueryAsync<TEntity>(GetStatement, new { Id = id }, transaction: unitOfWork.Transaction);
             return list.FirstOrDefault();
         }
 
         public virtual async Task<TEntity> Create(TEntity entity)
         {
-            var result = await unitOfWork.Connection.QueryAsync<int>(InsertStatement + GetLastInsertIdStatement, entity, unitOfWork.Transaction);
+            var result = await unitOfWork.Connection.QueryAsync<int>(InsertStatement + GetLastInsertIdStatement, entity, transaction: unitOfWork.Transaction);
 
             return await Retrieve(result.First());
         }
 
         public async Task Update(TEntity entity)
         {
-            await unitOfWork.Connection.QueryAsync<TEntity>(UpdateStatement, entity, unitOfWork.Transaction);
+            await unitOfWork.Connection.QueryAsync<TEntity>(UpdateStatement, entity, transaction: unitOfWork.Transaction);
             return;
         }
     }
