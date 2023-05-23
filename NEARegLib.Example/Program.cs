@@ -16,18 +16,25 @@ namespace NEARegLib.Example
 
             // Common use cases:
             var neaRegLib = new NeaRegFactory("Server=localhost,3306;Database=neaweb;Allow User Variables=true;User Id=neaweb;Password=123456;IgnoreCommandTransaction=true;").GetNew();
-            
-            //Use case 1: Update archiveversion metadata with size, filesCount and location
-            var av = neaRegLib.ArchiveversionMetadataRepository.GetArchiveversionMetadataByIdentifier(archiveversionId).Result;
-            av.LocationId = neaRegLib.LocationRepository.GetLocationByPath(archiveversionFullPath).Result.Id;
-            av.TotalSize = totalSize;
-            av.FilesCount = filesCount;
 
-            //NOTE: We expect the repository to make a log entry concerning the update by itself!
-            var result = neaRegLib.UpdateArchiveversionAddLogEntry(av, "softwareName", LogEntryType.FileArchive).Result;
+            try
+            {
+                //Use case 1: Update archiveversion metadata with size, filesCount and location
+                var av = neaRegLib.ArchiveversionMetadataRepository.GetArchiveversionMetadataByIdentifier(archiveversionId).Result ?? throw new ArgumentException($"No metadata found for {archiveversionId}");
+                av.LocationId = neaRegLib.LocationRepository.GetLocationByPath(archiveversionFullPath).Result.Id;
+                av.TotalSize = totalSize;
+                av.FilesCount = filesCount;
 
-            //NOTE: We expect the repository to be aware of the software version and name by it self!
-            var result2 = neaRegLib.AddLogEntry(av.Id, "softwareName", logDescription, LogEntryType.FileArchive, false).Result;
+                //NOTE: We expect the repository to make a log entry concerning the update by itself!
+                var result = neaRegLib.UpdateArchiveversionAddLogEntry(av, LogEntryType.FileArchive).Result;
+
+                //NOTE: We expect the repository to be aware of the software version and name by it self!
+                var result2 = neaRegLib.AddLogEntry(av.Id, logDescription, LogEntryType.FileArchive, false).Result;
+            }
+            catch(Exception ex)
+            {
+                System.Console.WriteLine($"Could not update archiveversion or add log entry: {ex.Message}");
+            }
         }
     }
 }
