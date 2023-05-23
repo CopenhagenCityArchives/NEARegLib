@@ -3,7 +3,7 @@ using NEARegLib.DAL.Repositories;
 using NEARegLib.DAL.UnitsOfWork;
 using System;
 
-namespace NEARegLib.DAL.UnitOfWork
+namespace NEARegLib
 {
     public class NeaRegFactory
     {
@@ -24,7 +24,7 @@ namespace NEARegLib.DAL.UnitOfWork
             var connection = conFac.GetConnection;
 
             // Get unit of work and repositories
-            var unitOfWork = new NEARegLib.DAL.UnitsOfWork.UnitOfWork(connection);
+            var unitOfWork = new UnitOfWork(connection);
             var archiveversionMetadataRepository = new ArchiveversionMetadataRepository(unitOfWork);
             var logEntryMetadataRepository = new LogEntryRepository(unitOfWork);
             var softwareVersionRepository = new SoftwareVersionRepository(unitOfWork);

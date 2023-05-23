@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace NEARegLib.DAL.UnitOfWork
+namespace NEARegLib
 {
     /// <summary>
     /// This class handles creation of LogEntry objects and subsequent updates of related archiveversionmetadata
