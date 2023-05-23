@@ -3,7 +3,7 @@ using NEARegLib.Models;
 using NEARegLib.DAL.Repositories;
 using NEARegLib.DAL.UnitsOfWork;
 using NUnit.Framework;
-using neaweb_dapper.DAL.UnitOfWork;
+using NEARegLib.DAL.UnitOfWork;
 using System.Numerics;
 
 namespace NEARegLib.Test

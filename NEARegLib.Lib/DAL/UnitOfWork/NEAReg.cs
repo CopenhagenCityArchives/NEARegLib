@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace neaweb_dapper.DAL.UnitOfWork
+namespace NEARegLib.DAL.UnitOfWork
 {
     /// <summary>
     /// This class handles creation of LogEntry objects and subsequent updates of related archiveversionmetadata

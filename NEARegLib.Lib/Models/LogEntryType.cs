@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace neaweb_dapper.Models
+﻿namespace NEARegLib.Models
 {
     public enum LogEntryType : ushort
     {

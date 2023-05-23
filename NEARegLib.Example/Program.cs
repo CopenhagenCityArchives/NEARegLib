@@ -1,5 +1,5 @@
 ﻿using NEARegLib.Models;
-using neaweb_dapper.DAL.UnitOfWork;
+using NEARegLib.DAL.UnitOfWork;
 
 namespace NEARegLib.Example
 {

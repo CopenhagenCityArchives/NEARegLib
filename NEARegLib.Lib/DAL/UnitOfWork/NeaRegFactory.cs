@@ -3,7 +3,7 @@ using NEARegLib.DAL.Repositories;
 using NEARegLib.DAL.UnitsOfWork;
 using System;
 
-namespace neaweb_dapper.DAL.UnitOfWork
+namespace NEARegLib.DAL.UnitOfWork
 {
     public class NeaRegFactory
     {
