@@ -24,10 +24,10 @@ namespace NEARegLib.Example
             av.FilesCount = filesCount;
 
             //NOTE: We expect the repository to make a log entry concerning the update by itself!
-            var result = neaRegLib.UpdateArchiveversionAddLogEntry(av, LogEntryType.FileArchive).Result;
+            var result = neaRegLib.UpdateArchiveversionAddLogEntry(av, "softwareName", LogEntryType.FileArchive).Result;
 
             //NOTE: We expect the repository to be aware of the software version and name by it self!
-            var result2 = neaRegLib.AddLogEntry(av.Id, logDescription, LogEntryType.FileArchive, false).Result;
+            var result2 = neaRegLib.AddLogEntry(av.Id, "softwareName", logDescription, LogEntryType.FileArchive, false).Result;
         }
     }
 }

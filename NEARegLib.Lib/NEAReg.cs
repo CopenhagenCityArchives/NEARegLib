@@ -4,6 +4,7 @@ using NEARegLib.DAL.UnitsOfWork;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Reflection;
 
 namespace NEARegLib
 {
@@ -27,7 +28,7 @@ namespace NEARegLib
             _logEntryRepository = logEntryRepository;
         }
 
-        public async Task<bool> UpdateArchiveversionAddLogEntry(ArchiveversionMetadata av, LogEntryType type)
+        public async Task<bool> UpdateArchiveversionAddLogEntry(ArchiveversionMetadata av, string softwareName, LogEntryType type)
         {
             var existingAv = await ArchiveversionMetadataRepository.Retrieve(av.Id) ?? throw new ArgumentException("ArchiveversionMetadata must exist in database when updating it");
 
@@ -41,7 +42,7 @@ namespace NEARegLib
                     await ArchiveversionMetadataRepository.Update(av);
                 }
 
-                await AddLogEntry(av.Id, "Updated archiveversion metadata", type);
+                await AddLogEntry(av.Id, softwareName, "Updated archiveversion metadata", type);
             }
             catch (Exception e)
             {
@@ -55,11 +56,17 @@ namespace NEARegLib
             return true;
         }
 
-        public async Task<bool> AddLogEntry(int archiveversionId, string description, LogEntryType logEntryType, bool errorsOccurred = false)
+        public async Task<bool> AddLogEntry(int archiveversionId, string softwareName, string description, LogEntryType logEntryType, bool errorsOccurred = false)
         {
+            string[] wantedFields = { "MajorMinorPatch", "InformationalVersion" };
+            var gitVersionInformationType = Assembly.GetExecutingAssembly().GetType("GitVersionInformation");
+            var fields = gitVersionInformationType.GetFields();
+
+            var informationalVersion = fields.Where(f => f.Name.Equals("InformationalVersion")).FirstOrDefault().GetValue(null);
+
             var logEntry = new LogEntry()
             {
-                SoftwareVersionId = _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion("software", "version" + new Random().Next(1000)).Result.Id,
+                SoftwareVersionId = _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(softwareName, informationalVersion.ToString()).Result.Id,
                 Description = description,
                 Type = logEntryType,
                 ArchiveversionId = archiveversionId,
