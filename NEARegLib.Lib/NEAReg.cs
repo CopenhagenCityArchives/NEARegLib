@@ -64,6 +64,9 @@ namespace NEARegLib
 
             var informationalVersion = fields.Where(f => f.Name.Equals("InformationalVersion")).FirstOrDefault().GetValue(null);
 
+            Assembly a = Assembly.GetExecutingAssembly();
+            System.Console.WriteLine(a.FullName);
+
             var logEntry = new LogEntry()
             {
                 SoftwareVersionId = _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(softwareName, informationalVersion.ToString()).Result.Id,
