@@ -7,9 +7,13 @@ dotnet: 6.0
 git:
   depth: false
 install:
-  - mkdir $HOME/dotnet_install && cd $HOME/dotnet_install
-  - curl -L https://aka.ms/install-dotnet-preview -o install-dotnet-preview.sh
-  - sudo bash install-dotnet-preview.sh
+  - curl -Lo dotnet.tar.gz https://download.visualstudio.microsoft.com/download/pr/f5c74056-330b-452b-915e-d98fda75024e/18076ca3b89cd362162bbd0cbf9b2ca5/dotnet-sdk-7.0.100-rc.2.22477.23-linux-x64.tar.gz
+  - mkdir dotnet
+  - tar -C dotnet -xf dotnet.tar.gz
+  - rm dotnet.tar.gz
+  - export DOTNET_ROOT=~/dotnet
+  - export PATH=$PATH:~/dotnet
+  - dotnet --version
 script:
  - cd $TRAVIS_BUILD_DIR 
  - dotnet test NEARegLib.Tests -c Release
