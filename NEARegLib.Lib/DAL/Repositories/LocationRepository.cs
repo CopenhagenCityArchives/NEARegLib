@@ -56,7 +56,7 @@ namespace NEARegLib.DAL.Repositories
 
             if (curLocation == null)
             {
-                throw new ArgumentException("No location found that matches {av.Location.Path}. The archiveversion cannot be updated");
+                throw new ArgumentException($"No location found that matches {path}. The archiveversion cannot be updated");
             }
 
             return curLocation;
