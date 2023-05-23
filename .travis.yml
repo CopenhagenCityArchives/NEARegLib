@@ -12,4 +12,4 @@ install:
   - sudo bash install-dotnet-preview.sh
 script:
  - dotnet restore
- - dotnet test -c Release
+ - dotnet test NEARegLib.Tests -c Release
