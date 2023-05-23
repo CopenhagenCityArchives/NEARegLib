@@ -41,15 +41,5 @@ namespace NEARegLib.DAL.Repositories
         }
 
         public LogEntryRepository(IUnitOfWork unitOfWork) : base(unitOfWork) { }
-
-        /*    public override async Task<LogEntry> Create(LogEntry entity)
-            {
-                var result = await unitOfWork.Connection.QueryAsync<LogEntry>(
-                    InsertStatement + GetLastInsertIdStatement, 
-                    new { entity.Id, entity.Type, ArchiveversionId = entity.ArchiveversionMetadata.Id, description = entity.Description, status = entity.Status, SoftwareVersion = entity.SoftwareVersion.Id, entity.UserId }, 
-                    unitOfWork.Transaction);
-
-                return result.First();
-            }*/
     }
 }
