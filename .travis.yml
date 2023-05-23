@@ -11,5 +11,4 @@ install:
   - curl -L https://aka.ms/install-dotnet-preview -o install-dotnet-preview.sh
   - sudo bash install-dotnet-preview.sh
 script:
- - dotnet restore
  - dotnet test NEARegLib.Tests -c Release
