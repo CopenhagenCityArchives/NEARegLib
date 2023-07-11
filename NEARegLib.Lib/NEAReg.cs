@@ -56,19 +56,20 @@ namespace NEARegLib
 
         public async Task<LogEntry> AddLogEntry(int archiveversionId, string description, LogEntryType logEntryType, bool errorsOccurred = false)
         {
-
             var currentSoftwareVersion = SoftwareVersion.GetCurrent();
+
+            var softwareVersionId = _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(currentSoftwareVersion.Name, currentSoftwareVersion.Version).Result.Id;
 
             var logEntry = new LogEntry()
             {
-                SoftwareVersionId = _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(currentSoftwareVersion.Name, currentSoftwareVersion.Version).Result.Id,
+                SoftwareVersionId = softwareVersionId,
                 Description = description,
                 Type = logEntryType,
                 ArchiveversionId = archiveversionId,
                 ErrorsOccurred = errorsOccurred
             };
 
-            return await _logEntryRepository.Create(logEntry) != null;
+            return await _logEntryRepository.Create(logEntry);
         }
     }
 }
