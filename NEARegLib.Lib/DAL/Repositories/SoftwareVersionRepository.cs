@@ -13,7 +13,7 @@ namespace NEARegLib.DAL.Repositories
         {
             get
             {
-                return "SELECT * FROM software_version WHERE 1;";
+                return "SELECT id, program as Name, version, created FROM software_version WHERE 1;";
             }
         }
 
@@ -21,7 +21,7 @@ namespace NEARegLib.DAL.Repositories
         {
             get
             {
-                return "SELECT * FROM software_version WHERE id = @Id;";
+                return "SELECT id, program as Name, version, created FROM software_version WHERE id = @Id;";
             }
         }
 
@@ -29,7 +29,7 @@ namespace NEARegLib.DAL.Repositories
         {
             get
             {
-                return "INSERT INTO software_version (name, version) VALUES (@Name, @Version);";
+                return "INSERT INTO software_version (program, version) VALUES (@Name, @Version);";
             }
         }
 
