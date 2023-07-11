@@ -42,7 +42,7 @@ namespace NEARegLib.DAL.Repositories
 
         public virtual async Task<TEntity> Create(TEntity entity)
         {
-            var result = await unitOfWork.Connection.QueryAsync<int>(InsertStatement + GetLastInsertIdStatement, entity, transaction: unitOfWork.Transaction);
+            var result = unitOfWork.Connection.Query<int>(InsertStatement + GetLastInsertIdStatement, entity, transaction: unitOfWork.Transaction);
 
             return await Retrieve(result.First());
         }
