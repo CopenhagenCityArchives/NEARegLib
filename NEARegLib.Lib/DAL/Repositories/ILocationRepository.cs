@@ -5,6 +5,6 @@ namespace NEARegLib.DAL.Repositories
 {
     public interface ILocationRepository : IGenericRepository<Location>
     {
-        public Task<Location> GetLocationByPath(string path);
+        public Location GetLocationByPath(string path);
     }
 }

@@ -5,6 +5,6 @@ namespace NEARegLib.DAL.Repositories
 {
     public interface IArchiveversionMetadataRepository : IGenericRepository<ArchiveversionMetadata>
     {
-        public Task<ArchiveversionMetadata> GetArchiveversionMetadataByIdentifier(string archiveversionNumber);
+        public ArchiveversionMetadata GetArchiveversionMetadataByIdentifier(string archiveversionNumber);
     }
 }

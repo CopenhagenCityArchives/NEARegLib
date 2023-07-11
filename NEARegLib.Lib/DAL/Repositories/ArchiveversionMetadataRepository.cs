@@ -48,9 +48,9 @@ namespace NEARegLib.DAL.Repositories
         /// <param name="archiveversionNumber"></param>
         /// <returns>A Task that returns an ArchiveversionMetadata object if it exists otherwise null</returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<ArchiveversionMetadata> GetArchiveversionMetadataByIdentifier(string archiveversionNumber)
+        public ArchiveversionMetadata GetArchiveversionMetadataByIdentifier(string archiveversionNumber)
         {
-            var avs = await RetrieveAll();
+            var avs = RetrieveAll();
 
             var filteredAvs = avs.Where(av => av.Number.ToLower().Equals(archiveversionNumber.ToLower())).ToList();
 

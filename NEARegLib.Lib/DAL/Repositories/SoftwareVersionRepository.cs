@@ -49,13 +49,13 @@ namespace NEARegLib.DAL.Repositories
         /// <param name="name"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        public async Task<SoftwareVersion> InsertOrGetSoftwareVersionIdByNameAndVersion(string name, string version)
+        public SoftwareVersion InsertOrGetSoftwareVersionIdByNameAndVersion(string name, string version)
         {
-            var allSoftwareVersions = await RetrieveAll();
+            var allSoftwareVersions = RetrieveAll();
 
             var result = allSoftwareVersions.Where(sv => sv.Name.ToLower().Equals(name.ToLower()) && sv.Version.ToLower().Equals(version.ToLower())).FirstOrDefault();
 
-            result ??= await Create(new SoftwareVersion() { Name = name, Version = version });
+            result ??= Create(new SoftwareVersion() { Name = name, Version = version });
 
             return result;
         }

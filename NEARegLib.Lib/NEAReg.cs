@@ -26,9 +26,9 @@ namespace NEARegLib
             _logEntryRepository = logEntryRepository;
         }
 
-        public async Task<bool> UpdateArchiveversionAddLogEntry(ArchiveversionMetadata av, LogEntryType type)
+        public bool UpdateArchiveversionAddLogEntry(ArchiveversionMetadata av, LogEntryType type)
         {
-            var existingAv = await ArchiveversionMetadataRepository.Retrieve(av.Id) ?? throw new ArgumentException("ArchiveversionMetadata must exist in database when updating it");
+            var existingAv = ArchiveversionMetadataRepository.Retrieve(av.Id) ?? throw new ArgumentException("ArchiveversionMetadata must exist in database when updating it");
 
             _unitOfWork.StartTransaction();
 
@@ -37,10 +37,10 @@ namespace NEARegLib
                 // Archiveversion already exists - update if it as changed
                 if (!existingAv.Equals(av))
                 {
-                    await ArchiveversionMetadataRepository.Update(av);
+                    ArchiveversionMetadataRepository.Update(av);
                 }
 
-                await AddLogEntry(av.Id, "Updated archiveversion metadata", type);
+                AddLogEntry(av.Id, "Updated archiveversion metadata", type);
             }
             catch (Exception e)
             {
@@ -54,11 +54,11 @@ namespace NEARegLib
             return true;
         }
 
-        public async Task<LogEntry> AddLogEntry(int archiveversionId, string description, LogEntryType logEntryType, bool errorsOccurred = false)
+        public LogEntry AddLogEntry(int archiveversionId, string description, LogEntryType logEntryType, bool errorsOccurred = false)
         {
             var currentSoftwareVersion = SoftwareVersion.GetCurrent();
 
-            var softwareVersionId = _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(currentSoftwareVersion.Name, currentSoftwareVersion.Version).Result.Id;
+            var softwareVersionId = _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(currentSoftwareVersion.Name, currentSoftwareVersion.Version).Id;
 
             var logEntry = new LogEntry()
             {
@@ -69,7 +69,7 @@ namespace NEARegLib
                 ErrorsOccurred = errorsOccurred
             };
 
-            return await _logEntryRepository.Create(logEntry);
+            return _logEntryRepository.Create(logEntry);
         }
     }
 }

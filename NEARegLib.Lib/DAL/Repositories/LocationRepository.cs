@@ -48,9 +48,9 @@ namespace NEARegLib.DAL.Repositories
         /// <param name="path"></param>
         /// <returns>A Task that returns a Location object if it exists otherwise null</returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<Location> GetLocationByPath(string path)
+        public Location GetLocationByPath(string path)
         {
-            var locations = await RetrieveAll();
+            var locations = RetrieveAll();
 
             var curLocation = locations.Where(l => path.ToLower().Contains(l.Path.ToLower())).FirstOrDefault();
 
