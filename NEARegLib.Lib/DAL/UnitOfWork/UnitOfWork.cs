@@ -45,7 +45,7 @@ namespace NEARegLib.DAL.UnitsOfWork
             {
                 _dbTransaction.Commit();
             }
-            catch (Exception ex)
+            catch
             {
                 _dbTransaction.Rollback();
             }
