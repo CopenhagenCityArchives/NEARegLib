@@ -14,10 +14,9 @@ namespace NEARegLib.Models
             string[] wantedFields = { "MajorMinorPatch", "InformationalVersion" };
             var gitVersionInformationType = Assembly.GetExecutingAssembly().GetType("GitVersionInformation");
             var fields = gitVersionInformationType.GetFields();
-
             var informationalVersion = fields.Where(f => f.Name.Equals("InformationalVersion")).FirstOrDefault().GetValue(null);
 
-            Assembly a = Assembly.GetExecutingAssembly();
+            Assembly a = Assembly.GetEntryAssembly();
 
             return new SoftwareVersion { Name = a.FullName.Split(',').First(), Version = informationalVersion.ToString() };
         }
