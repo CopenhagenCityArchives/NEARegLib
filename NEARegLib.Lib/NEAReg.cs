@@ -15,11 +15,11 @@ namespace NEARegLib
         private readonly ISoftwareVersionRepository _softwareVersionRepository;
         public readonly ILocationRepository LocationRepository;
         private readonly IGenericRepository<LogEntry> _logEntryRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        public readonly IUnitOfWork UnitOfWork;
 
         public NEAReg(IUnitOfWork unitOfWork, IArchiveversionMetadataRepository archiveversionMetadataRepository, ISoftwareVersionRepository softwareVersionRepository, ILocationRepository locationRepository, IGenericRepository<LogEntry> logEntryRepository)
         {
-            _unitOfWork = unitOfWork;
+            UnitOfWork = unitOfWork;
             ArchiveversionMetadataRepository = archiveversionMetadataRepository;
             _softwareVersionRepository = softwareVersionRepository;
             LocationRepository = locationRepository;
@@ -30,8 +30,6 @@ namespace NEARegLib
         {
             var existingAv = ArchiveversionMetadataRepository.Retrieve(av.Id) ?? throw new ArgumentException("ArchiveversionMetadata must exist in database when updating it");
 
-            _unitOfWork.StartTransaction();
-
             try
             {
                 // Archiveversion already exists - update if it as changed
@@ -40,36 +38,43 @@ namespace NEARegLib
                     ArchiveversionMetadataRepository.Update(av);
                 }
 
-                AddLogEntry(av.Id, "Updated archiveversion metadata", type);
+                LogEntry entry = new LogEntry()
+                {
+                    ArchiveversionId = av.Id,
+                    Description = "Updated archiveversion metadata",
+                    Type = type,
+                    SoftwareVersionId = InsertOrGetSoftwareVersion().Id
+                };
             }
             catch (Exception e)
             {
-                _unitOfWork.RollBack();
+                UnitOfWork.RollBack();
 
                 throw e;
             }
 
-            _unitOfWork.Commit();
-
-            return true;
+            return false;
         }
 
-        public LogEntry AddLogEntry(int archiveversionId, string description, LogEntryType logEntryType, bool errorsOccurred = false)
+        public SoftwareVersion InsertOrGetSoftwareVersion()
         {
             var currentSoftwareVersion = SoftwareVersion.GetCurrent();
 
-            var softwareVersionId = _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(currentSoftwareVersion.Name, currentSoftwareVersion.Version).Id;
+            return _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(currentSoftwareVersion.Name, currentSoftwareVersion.Version);
+        }
 
-            var logEntry = new LogEntry()
+        public LogEntry AddLogEntry(LogEntry entry)
+        {
+            if(entry.ArchiveversionId == 0)
             {
-                SoftwareVersionId = softwareVersionId,
-                Description = description,
-                Type = logEntryType,
-                ArchiveversionId = archiveversionId,
-                ErrorsOccurred = errorsOccurred
-            };
+                throw new ArgumentException("ArchiveversionId must be set when adding log entries");
+            }
+            if(entry.SoftwareVersionId == 0)
+            {
+                throw new ArgumentException("Softwareversion must be set when adding log entries");
+            }
 
-            return _logEntryRepository.Create(logEntry);
+            return _logEntryRepository.Create(entry);
         }
     }
 }
