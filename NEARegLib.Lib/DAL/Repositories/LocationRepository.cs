@@ -54,12 +54,7 @@ namespace NEARegLib.DAL.Repositories
 
             var curLocation = locations.Where(l => path.ToLower().Contains(l.Path.ToLower())).FirstOrDefault();
 
-            if (curLocation == null)
-            {
-                throw new ArgumentException($"No location found that matches {path}. The archiveversion cannot be updated");
-            }
-
-            return curLocation;
+            return curLocation ?? throw new ArgumentException($"No location found that matches {path}. The archiveversion cannot be updated");
         }
     }
 }
