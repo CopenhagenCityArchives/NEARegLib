@@ -5,10 +5,10 @@ using System;
 
 namespace NEARegLib
 {
-    public class NeaRegFactory
+    public class NEARegFactory
     {
         private readonly string _connectionString;
-        public NeaRegFactory(string connectionString)
+        public NEARegFactory(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -17,7 +17,7 @@ namespace NEARegLib
 
             _connectionString = connectionString;
         }
-        public NeaReg GetNew()
+        public NEAReg GetNew()
         {
             // Get connection factory and connection string
             ConnectionFactory conFac = new ConnectionFactory(_connectionString);
@@ -30,7 +30,7 @@ namespace NEARegLib
             var softwareVersionRepository = new SoftwareVersionRepository(unitOfWork);
             var locationRepository = new LocationRepository(unitOfWork);
 
-            return new NeaReg(unitOfWork, archiveversionMetadataRepository, softwareVersionRepository, locationRepository, logEntryMetadataRepository);
+            return new NEAReg(unitOfWork, archiveversionMetadataRepository, softwareVersionRepository, locationRepository, logEntryMetadataRepository);
         }
     }
 }

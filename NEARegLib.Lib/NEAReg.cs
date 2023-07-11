@@ -3,15 +3,13 @@ using NEARegLib.DAL.Repositories;
 using NEARegLib.DAL.UnitsOfWork;
 using System;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Reflection;
 
 namespace NEARegLib
 {
     /// <summary>
     /// This class handles creation of LogEntry objects and subsequent updates of related archiveversionmetadata
     /// </summary>
-    public class NeaReg
+    public class NEAReg
     {
         public readonly IArchiveversionMetadataRepository ArchiveversionMetadataRepository;
         private readonly ISoftwareVersionRepository _softwareVersionRepository;
@@ -19,7 +17,7 @@ namespace NEARegLib
         private readonly IGenericRepository<LogEntry> _logEntryRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public NeaReg(IUnitOfWork unitOfWork, IArchiveversionMetadataRepository archiveversionMetadataRepository, ISoftwareVersionRepository softwareVersionRepository, ILocationRepository locationRepository, IGenericRepository<LogEntry> logEntryRepository)
+        public NEAReg(IUnitOfWork unitOfWork, IArchiveversionMetadataRepository archiveversionMetadataRepository, ISoftwareVersionRepository softwareVersionRepository, ILocationRepository locationRepository, IGenericRepository<LogEntry> logEntryRepository)
         {
             _unitOfWork = unitOfWork;
             ArchiveversionMetadataRepository = archiveversionMetadataRepository;
@@ -56,7 +54,7 @@ namespace NEARegLib
             return true;
         }
 
-        public async Task<bool> AddLogEntry(int archiveversionId, string description, LogEntryType logEntryType, bool errorsOccurred = false)
+        public async Task<LogEntry> AddLogEntry(int archiveversionId, string description, LogEntryType logEntryType, bool errorsOccurred = false)
         {
 
             var currentSoftwareVersion = SoftwareVersion.GetCurrent();

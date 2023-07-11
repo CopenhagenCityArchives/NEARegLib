@@ -15,7 +15,7 @@ namespace NEARegLib.Example
             var filesCount = 1000;
 
             // Common use cases:
-            var neaRegLib = new NeaRegFactory("Server=localhost,3306;Database=neaweb;Allow User Variables=true;User Id=neaweb;Password=123456;IgnoreCommandTransaction=true;").GetNew();
+            var neaRegLib = new NEARegFactory("Server=localhost,3306;Database=neaweb;Allow User Variables=true;User Id=neaweb;Password=123456;IgnoreCommandTransaction=true;").GetNew();
 
             try
             {
