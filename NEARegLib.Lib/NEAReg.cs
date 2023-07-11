@@ -26,7 +26,7 @@ namespace NEARegLib
             _logEntryRepository = logEntryRepository;
         }
 
-        public bool UpdateArchiveversionAddLogEntry(ArchiveversionMetadata av, LogEntryType type)
+        public bool UpdateArchiveversionAddLogEntry(ArchiveversionMetadata av, SoftwareVersion softwareVersion, LogEntryType type)
         {
             var existingAv = ArchiveversionMetadataRepository.Retrieve(av.Id) ?? throw new ArgumentException("ArchiveversionMetadata must exist in database when updating it");
 
@@ -43,7 +43,7 @@ namespace NEARegLib
                     ArchiveversionId = av.Id,
                     Description = "Updated archiveversion metadata",
                     Type = type,
-                    SoftwareVersionId = InsertOrGetSoftwareVersion().Id
+                    SoftwareVersionId = InsertOrGetSoftwareVersion(softwareVersion).Id
                 };
             }
             catch (Exception e)
@@ -56,11 +56,9 @@ namespace NEARegLib
             return false;
         }
 
-        public SoftwareVersion InsertOrGetSoftwareVersion()
+        public SoftwareVersion InsertOrGetSoftwareVersion(SoftwareVersion softwareVersion)
         {
-            var currentSoftwareVersion = SoftwareVersion.GetCurrent();
-
-            return _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(currentSoftwareVersion.Name, currentSoftwareVersion.Version);
+            return _softwareVersionRepository.InsertOrGetSoftwareVersionIdByNameAndVersion(softwareVersion.Name, softwareVersion.Version);
         }
 
         public LogEntry AddLogEntry(LogEntry entry)
