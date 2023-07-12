@@ -9,7 +9,7 @@ namespace NEARegLib.Models
         public string Description { get; set; }
         public DateTime Timestamp { get; }
         public bool ErrorsOccurred { get; set; }
-        public int UserId { get { return -1; } }
+        public int UserId { get { return 1; } }
         public int ArchiveversionId { get; set; }
         public int SoftwareVersionId { get; set; }
     }
