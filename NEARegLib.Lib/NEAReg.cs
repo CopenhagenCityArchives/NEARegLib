@@ -33,10 +33,9 @@ namespace NEARegLib
             try
             {
                 // Archiveversion already exists - update if it as changed
-                if (!existingAv.Equals(av))
-                {
-                    ArchiveversionMetadataRepository.Update(av);
-                }
+                if (existingAv.Equals(av)) { return false; }
+
+                ArchiveversionMetadataRepository.Update(av);
 
                 LogEntry entry = new LogEntry()
                 {
@@ -47,6 +46,8 @@ namespace NEARegLib
                 };
 
                 AddLogEntry(entry);
+
+                return true;
             }
             catch (Exception e)
             {
@@ -54,8 +55,6 @@ namespace NEARegLib
 
                 throw e;
             }
-
-            return false;
         }
 
         public SoftwareVersion InsertOrGetSoftwareVersion(SoftwareVersion softwareVersion)
