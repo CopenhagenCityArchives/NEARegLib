@@ -7,7 +7,7 @@ namespace NEARegLib.Models
         public int Id { get; set; }
         public string Number { get; set; }
         //This value is calculated from bytes like this: Math.Round((decimal)TotalSize / 1024 / 1024 / 1024, 2);
-        public float TotalSizeGB { get; set; }
+        public decimal TotalSizeGB { get; set; }
         public int FilesCount { get; set; }
         public bool Searchable { get; set; }
         public int SearchesCount { get; set; }
