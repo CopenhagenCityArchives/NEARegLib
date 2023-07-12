@@ -53,7 +53,7 @@ namespace NEARegLib.DAL.UnitsOfWork
 
         public void RollBack()
         {
-            _dbTransaction.Rollback();
+            _dbTransaction?.Rollback();
         }
 
         public void Dispose()
