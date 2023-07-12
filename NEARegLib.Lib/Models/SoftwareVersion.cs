@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace NEARegLib.Models
@@ -12,7 +13,15 @@ namespace NEARegLib.Models
         public static SoftwareVersion GetCurrent()
         {
             string[] wantedFields = { "MajorMinorPatch", "InformationalVersion" };
-            var gitVersionInformationType = Assembly.GetExecutingAssembly().GetType("GitVersionInformation");
+            System.Type gitVersionInformationType;
+            try
+            {
+                gitVersionInformationType = Assembly.GetEntryAssembly().GetType("GitVersionInformation");
+            }
+            catch
+            {
+                throw new Exception("Could not retrieve git version information. Be sure that the nuget package GitVersion.MsBuild is included in the entry assembly.");
+            }
             var fields = gitVersionInformationType.GetFields();
             var informationalVersion = fields.Where(f => f.Name.Equals("InformationalVersion")).FirstOrDefault().GetValue(null);
 
