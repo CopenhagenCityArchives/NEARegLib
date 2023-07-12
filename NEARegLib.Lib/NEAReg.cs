@@ -45,6 +45,8 @@ namespace NEARegLib
                     Type = type,
                     SoftwareVersionId = InsertOrGetSoftwareVersion(softwareVersion).Id
                 };
+
+                AddLogEntry(entry);
             }
             catch (Exception e)
             {
