@@ -6,7 +6,8 @@ namespace NEARegLib.Models
     {
         public int Id { get; set; }
         public string Number { get; set; }
-        public float TotalSize { get; set; }
+        //This value is calculated from bytes like this: Math.Round((decimal)TotalSize / 1024 / 1024 / 1024, 2);
+        public float TotalSizeGB { get; set; }
         public int FilesCount { get; set; }
         public bool Searchable { get; set; }
         public int SearchesCount { get; set; }
@@ -27,7 +28,7 @@ namespace NEARegLib.Models
             return
                 Id == ae.Id &&
                 Number == ae.Number &&
-                TotalSize == ae.TotalSize &&
+                TotalSizeGB == ae.TotalSizeGB &&
                 FilesCount == ae.FilesCount &&
                 Searchable == ae.Searchable &&
                 SearchesCount == ae.SearchesCount &&
@@ -40,7 +41,7 @@ namespace NEARegLib.Models
             HashCode hash = new HashCode();
             hash.Add(Id);
             hash.Add(Number);
-            hash.Add(TotalSize);
+            hash.Add(TotalSizeGB);
             hash.Add(FilesCount);
             hash.Add(Searchable);
             hash.Add(SearchesCount);
