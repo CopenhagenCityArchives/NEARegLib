@@ -3,7 +3,7 @@ using System.Data;
 
 namespace NEARegLib.DAL.UnitsOfWork
 {
-    internal class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         readonly IDbConnection _connection;
         IDbTransaction _dbTransaction;

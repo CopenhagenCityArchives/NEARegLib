@@ -4,7 +4,7 @@ using System;
 
 namespace NEARegLib.DAL.Repositories
 {
-    internal class LogEntryRepository : GenericRepository<LogEntry>
+    public class LogEntryRepository : GenericRepository<LogEntry>
     {
         protected override string GetAllStatement
         {
