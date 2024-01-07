@@ -1,5 +1,5 @@
-﻿using NEARegLib.Models;
-using NEARegLib.DAL.UnitsOfWork;
+﻿using NEARegLib.DAL.UnitsOfWork;
+using NEARegLib.Models;
 using System;
 
 namespace NEARegLib.DAL.Repositories

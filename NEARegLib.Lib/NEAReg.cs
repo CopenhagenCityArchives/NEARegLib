@@ -1,8 +1,7 @@
-﻿using NEARegLib.Models;
-using NEARegLib.DAL.Repositories;
+﻿using NEARegLib.DAL.Repositories;
 using NEARegLib.DAL.UnitsOfWork;
+using NEARegLib.Models;
 using System;
-using System.Threading.Tasks;
 
 namespace NEARegLib
 {
@@ -64,11 +63,11 @@ namespace NEARegLib
 
         public LogEntry AddLogEntry(LogEntry entry)
         {
-            if(entry.ArchiveversionId == 0)
+            if (entry.ArchiveversionId == 0)
             {
                 throw new ArgumentException("ArchiveversionId must be set when adding log entries");
             }
-            if(entry.SoftwareVersionId == 0)
+            if (entry.SoftwareVersionId == 0)
             {
                 throw new ArgumentException("Softwareversion must be set when adding log entries");
             }

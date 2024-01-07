@@ -6,10 +6,12 @@ namespace NEARegLib.DAL
     {
         private readonly string _connectionString;
 
-        public IDbConnection GetConnection { 
-            get { 
-                return new MySqlConnector.MySqlConnection(_connectionString); 
-            } 
+        public IDbConnection GetConnection
+        {
+            get
+            {
+                return new MySqlConnector.MySqlConnection(_connectionString);
+            }
         }
 
         public ConnectionFactory(string connectionString)

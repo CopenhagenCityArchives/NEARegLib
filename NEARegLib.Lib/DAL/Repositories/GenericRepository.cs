@@ -2,7 +2,6 @@
 using NEARegLib.DAL.UnitsOfWork;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using static Dapper.SqlMapper;
 
 namespace NEARegLib.DAL.Repositories

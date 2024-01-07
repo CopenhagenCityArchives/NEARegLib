@@ -1,9 +1,8 @@
-﻿using NEARegLib.Models;
-using NEARegLib.DAL.UnitsOfWork;
+﻿using NEARegLib.DAL.UnitsOfWork;
+using NEARegLib.Models;
 using System;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NEARegLib.DAL.Repositories
 {

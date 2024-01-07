@@ -1,5 +1,4 @@
 ﻿using NEARegLib.Models;
-using System.Threading.Tasks;
 
 namespace NEARegLib.DAL.Repositories
 {
