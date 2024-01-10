@@ -14,6 +14,7 @@ namespace NEARegLib.Models
         public int LocationId { get; set; }
         public int ZipPackagesCount { get; set; }
         public int ZipSoftwareVersion { get; set; }
+        public int CPRIndexRowCount { get; set; }
 
         // Checks all properties including id
         public override bool Equals(object obj)

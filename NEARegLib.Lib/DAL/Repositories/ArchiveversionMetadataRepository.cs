@@ -12,7 +12,7 @@ namespace NEARegLib.DAL.Repositories
         {
             get
             {
-                return "SELECT ID as Id, IF(LENGTH(arkiv_nr) = 5, CONCAT('000',arkiv_nr), arkiv_nr) as Number, av_stoerrelse as TotalSizeGB, av_filmaengde as FilesCount, IF(minea_genrejst = 'n', 0, 1) as Searchable, minea_soeg as SearchesCount, filarkiv as LocationId, antal_zip_pakker as ZipPackagesCount, zip_program as ZipSoftwareVersion FROM arkiveringsversion WHERE 1";
+                return "SELECT ID as Id, IF(LENGTH(arkiv_nr) = 5, CONCAT('000',arkiv_nr), arkiv_nr) as Number, av_stoerrelse as TotalSizeGB, av_filmaengde as FilesCount, IF(minea_genrejst = 'n', 0, 1) as Searchable, minea_soeg as SearchesCount, filarkiv as LocationId, antal_zip_pakker as ZipPackagesCount, zip_program as ZipSoftwareVersion, CPRIndexRowCount FROM arkiveringsversion WHERE 1";
             }
         }
 
@@ -20,7 +20,7 @@ namespace NEARegLib.DAL.Repositories
         {
             get
             {
-                return "SELECT ID as Id, IF(LENGTH(arkiv_nr) = 5, CONCAT('000',arkiv_nr), arkiv_nr) as Number, av_stoerrelse as TotalSizeGB, av_filmaengde as FilesCount, IF(minea_genrejst = 'n', 0, 1) as Searchable, minea_soeg as SearchesCount, filarkiv as LocationId, antal_zip_pakker as ZipPackagesCount, zip_program as ZipSoftwareVersion FROM arkiveringsversion WHERE ID = @Id";
+                return "SELECT ID as Id, IF(LENGTH(arkiv_nr) = 5, CONCAT('000',arkiv_nr), arkiv_nr) as Number, av_stoerrelse as TotalSizeGB, av_filmaengde as FilesCount, IF(minea_genrejst = 'n', 0, 1) as Searchable, minea_soeg as SearchesCount, filarkiv as LocationId, antal_zip_pakker as ZipPackagesCount, zip_program as ZipSoftwareVersion, CPRIndexRowCount FROM arkiveringsversion WHERE ID = @Id";
             }
         }
 
@@ -36,7 +36,7 @@ namespace NEARegLib.DAL.Repositories
         {
             get
             {
-                return "UPDATE arkiveringsversion SET av_stoerrelse = @TotalSizeGB, av_filmaengde = @FilesCount, minea_genrejst = IF(@Searchable = 0, 'n', 'y'), minea_soeg = @SearchesCount, filarkiv = @LocationId, antal_zip_pakker = @ZipPackagesCount, zip_program = @ZipSoftwareVersion WHERE ID = @Id LIMIT 1";
+                return "UPDATE arkiveringsversion SET av_stoerrelse = @TotalSizeGB, av_filmaengde = @FilesCount, minea_genrejst = IF(@Searchable = 0, 'n', 'y'), minea_soeg = @SearchesCount, filarkiv = @LocationId, antal_zip_pakker = @ZipPackagesCount, zip_program = @ZipSoftwareVersion, CPRIndexRowCount = @CPRIndexRowCount WHERE ID = @Id LIMIT 1";
             }
         }
 
